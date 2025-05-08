@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 
 const AuthContext = createContext();
 
@@ -13,10 +13,9 @@ export const AuthProvider = ({ children }) => {
   // Set auth token
   const setAuthToken = (token) => {
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      // The Authorization header is now handled by the api interceptor
       localStorage.setItem('token', token);
     } else {
-      delete axios.defaults.headers.common['Authorization'];
       localStorage.removeItem('token');
     }
   };
@@ -25,10 +24,10 @@ export const AuthProvider = ({ children }) => {
   const loadUser = async () => {
     if (token) {
       setAuthToken(token);
-      
+
       try {
-        const res = await axios.get('/api/auth/me');
-        
+        const res = await api.get('/api/auth/me');
+
         if (res.data.status) {
           setUser(res.data.data);
           setIsAuthenticated(true);
@@ -45,15 +44,15 @@ export const AuthProvider = ({ children }) => {
         setAuthToken(null);
       }
     }
-    
+
     setLoading(false);
   };
 
   // Register user
   const register = async (formData) => {
     try {
-      const res = await axios.post('/api/auth/register', formData);
-      
+      const res = await api.post('/api/auth/register', formData);
+
       if (res.data.status) {
         setToken(res.data.token);
         setAuthToken(res.data.token);
@@ -64,10 +63,10 @@ export const AuthProvider = ({ children }) => {
         return { success: false, message: res.data.message };
       }
     } catch (err) {
-      const message = err.response && err.response.data.message 
-        ? err.response.data.message 
+      const message = err.response && err.response.data.message
+        ? err.response.data.message
         : 'Registration failed';
-      
+
       setError(message);
       return { success: false, message };
     }
@@ -76,8 +75,8 @@ export const AuthProvider = ({ children }) => {
   // Login user
   const login = async (formData) => {
     try {
-      const res = await axios.post('/api/auth/login', formData);
-      
+      const res = await api.post('/api/auth/login', formData);
+
       if (res.data.status) {
         setToken(res.data.token);
         setAuthToken(res.data.token);
@@ -88,10 +87,10 @@ export const AuthProvider = ({ children }) => {
         return { success: false, message: res.data.message };
       }
     } catch (err) {
-      const message = err.response && err.response.data.message 
-        ? err.response.data.message 
+      const message = err.response && err.response.data.message
+        ? err.response.data.message
         : 'Login failed';
-      
+
       setError(message);
       return { success: false, message };
     }

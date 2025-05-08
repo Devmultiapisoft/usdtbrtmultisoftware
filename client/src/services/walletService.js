@@ -1,10 +1,10 @@
-import axios from 'axios';
+import api from '../utils/api';
 
 // Check if the server is running and which features are available
 export const checkServerHealth = async () => {
   try {
     console.log('Checking server health...');
-    const res = await axios.get('/api/health');
+    const res = await api.get('/api/health');
     console.log('Server health:', res.data);
     return res.data;
   } catch (err) {
@@ -25,7 +25,7 @@ export const checkServerHealth = async () => {
 // Generate a new wallet
 export const generateWallet = async (label = 'My Wallet') => {
   try {
-    const res = await axios.post('/api/wallet/generate', { label });
+    const res = await api.post('/api/wallet/generate', { label });
     return res.data;
   } catch (err) {
     throw err.response ? err.response.data : { status: false, message: 'Server error' };
@@ -35,7 +35,7 @@ export const generateWallet = async (label = 'My Wallet') => {
 // Get all wallets
 export const getWallets = async () => {
   try {
-    const res = await axios.get('/api/wallet');
+    const res = await api.get('/api/wallet');
     return res.data;
   } catch (err) {
     throw err.response ? err.response.data : { status: false, message: 'Server error' };
@@ -46,7 +46,7 @@ export const getWallets = async () => {
 export const generateDepositAddress = async () => {
   try {
     console.log('Calling generateDepositAddress API');
-    const res = await axios.post('/api/wallet/deposit-address');
+    const res = await api.post('/api/wallet/deposit-address');
     console.log('generateDepositAddress API response:', res.data);
     return res.data;
   } catch (err) {
@@ -63,7 +63,7 @@ export const generateDepositAddress = async () => {
 export const getDepositAddress = async () => {
   try {
     console.log('Calling getDepositAddress API');
-    const res = await axios.get('/api/wallet/deposit-address');
+    const res = await api.get('/api/wallet/deposit-address');
     console.log('getDepositAddress API response:', res.data);
     return res.data;
   } catch (err) {
@@ -80,7 +80,7 @@ export const getDepositAddress = async () => {
 export const deposit = async () => {
   try {
     console.log('Calling deposit API');
-    const res = await axios.post('/api/wallet/deposit');
+    const res = await api.post('/api/wallet/deposit');
     console.log('deposit API response:', res.data);
     return res.data;
   } catch (err) {
@@ -96,7 +96,7 @@ export const deposit = async () => {
 // Request withdrawal
 export const requestWithdrawal = async (amount, walletAddress) => {
   try {
-    const res = await axios.post('/api/wallet/withdraw', { amount, walletAddress });
+    const res = await api.post('/api/wallet/withdraw', { amount, walletAddress });
     return res.data;
   } catch (err) {
     throw err.response ? err.response.data : { status: false, message: 'Server error' };
@@ -106,7 +106,7 @@ export const requestWithdrawal = async (amount, walletAddress) => {
 // Get all transactions
 export const getTransactions = async () => {
   try {
-    const res = await axios.get('/api/wallet/transactions');
+    const res = await api.get('/api/wallet/transactions');
     return res.data;
   } catch (err) {
     throw err.response ? err.response.data : { status: false, message: 'Server error' };
