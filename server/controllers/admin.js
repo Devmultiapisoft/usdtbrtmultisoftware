@@ -58,13 +58,17 @@ exports.getSettings = async (req, res) => {
     // Try to find existing settings
     let settings = await Settings.findOne().select('+gasPrivateKey +withdrawalAdminPrivateKey');
 
-    // If no settings exist, create default settings from .env
+    // If no settings exist, return empty settings object
     if (!settings) {
-      settings = await Settings.create({
-        usdtReceiveWallet: process.env.USDT_RECEIVE_WALLET || '',
-        gasWallet: process.env.GAS_WALLET || '',
-        gasPrivateKey: process.env.GAS_PRIVATE_KEY || '',
-        withdrawalAdminPrivateKey: process.env.WITHDRAWAL_ADMIN_PRIVATE_KEY || ''
+      return res.status(200).json({
+        status: true,
+        settings: {
+          usdtReceiveWallet: '',
+          gasWallet: '',
+          gasPrivateKey: '',
+          withdrawalAdminPrivateKey: ''
+        },
+        message: 'No settings found. Please configure wallet settings.'
       });
     }
 
@@ -123,11 +127,10 @@ exports.updateSettings = async (req, res) => {
       });
     }
 
-    // Update environment variables in memory
-    process.env.USDT_RECEIVE_WALLET = usdtReceiveWallet;
-    process.env.GAS_WALLET = gasWallet;
-    process.env.GAS_PRIVATE_KEY = gasPrivateKey;
-    process.env.WITHDRAWAL_ADMIN_PRIVATE_KEY = withdrawalAdminPrivateKey;
+    // Log the updated settings
+    console.log('Wallet settings updated successfully');
+    console.log('USDT Receive Wallet:', usdtReceiveWallet);
+    console.log('Gas Wallet:', gasWallet);
 
     return res.status(200).json({
       status: true,

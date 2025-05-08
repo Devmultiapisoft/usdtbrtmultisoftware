@@ -13,6 +13,36 @@ dotenv.config();
 // Connect to database
 connectDB();
 
+// Initialize settings in the database if they don't exist
+const Settings = require('./models/Settings');
+const initializeSettings = async () => {
+  try {
+    // Check if settings exist
+    const existingSettings = await Settings.findOne();
+
+    if (!existingSettings) {
+      console.log('No settings found in database. Creating default settings...');
+
+      // Create default settings
+      await Settings.create({
+        usdtReceiveWallet: '',
+        gasWallet: '',
+        gasPrivateKey: '',
+        withdrawalAdminPrivateKey: ''
+      });
+
+      console.log('Default settings created. Please configure wallet settings in the admin panel.');
+    } else {
+      console.log('Settings found in database.');
+    }
+  } catch (error) {
+    console.error('Error initializing settings:', error);
+  }
+};
+
+// Call the initialization function
+initializeSettings();
+
 // Route files
 const authRoutes = require('./routes/auth');
 const walletRoutes = require('./routes/wallet');

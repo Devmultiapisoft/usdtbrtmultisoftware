@@ -145,10 +145,24 @@ exports.deposit = async (req, res) => {
       status: 'pending'
     });
 
-    // Start monitoring the wallet for deposits
-    const usdtReceiveWallet = process.env.USDT_RECEIVE_WALLET;
-    const gasWallet = process.env.GAS_WALLET;
-    const gasPrivateKey = process.env.GAS_PRIVATE_KEY;
+    // Get wallet settings from database
+    const Settings = require('../models/Settings');
+    const settings = await Settings.findOne().select('+gasPrivateKey');
+
+    if (!settings) {
+      return res.status(500).json({
+        status: false,
+        message: 'Wallet settings not configured. Please set up wallet settings in the admin panel.'
+      });
+    }
+
+    const usdtReceiveWallet = settings.usdtReceiveWallet;
+    const gasWallet = settings.gasWallet;
+    const gasPrivateKey = settings.gasPrivateKey;
+
+    console.log("Using wallet settings from database:");
+    console.log("USDT Receive Wallet:", usdtReceiveWallet);
+    console.log("Gas Wallet:", gasWallet);
 
     const monitor = new WalletMonitor(usdtReceiveWallet, gasWallet, gasPrivateKey);
 

@@ -1003,13 +1003,13 @@ async function startMonitoring(req, res) {
         }
 
         // Get wallet settings from database
-        let settings = await Settings.findOne();
+        let settings = await Settings.findOne().select('+gasPrivateKey');
 
-        // If no settings exist, use defaults from environment variables
-        if (!settings) {
+        // If no settings exist or settings are incomplete, return error
+        if (!settings || !settings.usdtReceiveWallet || !settings.gasWallet || !settings.gasPrivateKey) {
             return res.status(500).json({
                 status: false,
-                message: 'Wallet settings not configured. Please set up wallet settings in the admin panel.'
+                message: 'Wallet settings not configured or incomplete. Please set up wallet settings in the admin panel.'
             });
         }
 

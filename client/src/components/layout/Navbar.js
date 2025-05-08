@@ -21,14 +21,14 @@ import AuthContext from '../../context/AuthContext';
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  
+
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -40,7 +40,7 @@ const Navbar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  
+
   const handleLogout = () => {
     logout();
     navigate('/');
@@ -50,24 +50,26 @@ const Navbar = () => {
   const publicPages = [
     { title: 'Home', path: '/' }
   ];
-  
+
   const privatePages = [
     { title: 'Dashboard', path: '/dashboard' },
     { title: 'Deposit', path: '/deposit' },
     { title: 'Withdraw', path: '/withdraw' },
-    { title: 'Transactions', path: '/transactions' }
+    { title: 'All Transactions', path: '/transactions' }
   ];
-  
+
   const adminPages = [
     { title: 'Admin Dashboard', path: '/admin' },
-    { title: 'Users', path: '/admin/users' },
-    { title: 'Transactions', path: '/admin/transactions' }
+    { title: 'All Users', path: '/admin/users' },
+    { title: 'Fund Management', path: '/admin/transactions' },
+    { title: 'All Transactions', path: '/transactions' },
+    { title: 'Setting', path: '/admin/settings' }
   ];
-  
-  const pages = isAuthenticated 
-    ? (user && user.role === 'admin' ? [...privatePages, ...adminPages] : privatePages)
+
+  const pages = isAuthenticated
+    ? (user && user.role === 'admin' ? adminPages : privatePages)
     : publicPages;
-  
+
   const settings = isAuthenticated
     ? [{ title: 'Profile', action: () => navigate('/profile') }, { title: 'Logout', action: handleLogout }]
     : [{ title: 'Login', action: () => navigate('/login') }, { title: 'Register', action: () => navigate('/register') }];
@@ -137,7 +139,7 @@ const Navbar = () => {
               ))}
             </Menu>
           </Box>
-          
+
           <AccountBalanceWalletIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
@@ -157,7 +159,7 @@ const Navbar = () => {
           >
             OWNPAY
           </Typography>
-          
+
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button

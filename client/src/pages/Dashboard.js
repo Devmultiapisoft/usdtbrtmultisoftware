@@ -148,7 +148,7 @@ const Dashboard = () => {
           </Alert>
         )}
 
-        <Grid container spacing={4}>
+        <Grid container spacing={3}>
           {/* Quick Actions - Always show this section */}
           <Grid item xs={12}>
             <Paper sx={{ p: 3, mb: 4, borderRadius: 2, boxShadow: '0 2px 10px rgba(0,0,0,0.08)' }}>
@@ -159,7 +159,7 @@ const Dashboard = () => {
               <Divider sx={{ mb: 3 }} />
 
               <Grid container spacing={3}>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid item xs={12} sm={6} md={4}>
                   <Card sx={{ height: '100%', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
                     <CardContent sx={{ textAlign: 'center' }}>
                       <ArrowDownwardIcon sx={{ fontSize: 40, color: 'primary.main', mb: 1 }} />
@@ -181,7 +181,7 @@ const Dashboard = () => {
                   </Card>
                 </Grid>
 
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid item xs={12} sm={6} md={4}>
                   <Card sx={{ height: '100%', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
                     <CardContent sx={{ textAlign: 'center' }}>
                       <ArrowUpwardIcon sx={{ fontSize: 40, color: 'secondary.main', mb: 1 }} />
@@ -204,7 +204,7 @@ const Dashboard = () => {
                   </Card>
                 </Grid>
 
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid item xs={12} sm={6} md={4}>
                   <Card sx={{ height: '100%', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
                     <CardContent sx={{ textAlign: 'center' }}>
                       <HistoryIcon sx={{ fontSize: 40, color: 'info.main', mb: 1 }} />
@@ -227,7 +227,7 @@ const Dashboard = () => {
                   </Card>
                 </Grid>
 
-                <Grid item xs={12} sm={6} md={3}>
+                {/* <Grid item xs={12} sm={6} md={3}>
                   <Card sx={{ height: '100%', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
                     <CardContent sx={{ textAlign: 'center' }}>
                       <AccountBalanceWalletIcon sx={{ fontSize: 40, color: 'success.main', mb: 1 }} />
@@ -248,28 +248,20 @@ const Dashboard = () => {
                       </Button>
                     </CardContent>
                   </Card>
-                </Grid>
+                </Grid> */}
               </Grid>
             </Paper>
           </Grid>
 
           {/* Wallets Section */}
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={12}>
             <Paper sx={{ p: 3, height: '100%' }}>
               <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                 <Typography variant="h6" component="h2">
                   <AccountBalanceWalletIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
                   My Wallets
                 </Typography>
-                <Button
-                  variant="contained"
-                  size="small"
-                  startIcon={<AddIcon />}
-                  onClick={handleGenerateWallet}
-                  disabled={walletLoading}
-                >
-                  {walletLoading ? 'Generating...' : 'New Wallet'}
-                </Button>
+              
               </Box>
 
               <Divider sx={{ mb: 2 }} />
